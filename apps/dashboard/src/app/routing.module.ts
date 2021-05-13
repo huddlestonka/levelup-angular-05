@@ -1,14 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FoodiesComponent } from './foodies/foodies.component';
 import { HomeComponent } from './home/home.component';
-import { MealsComponent } from './meals/meals.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'meals', component: MealsComponent },
-  { path: 'foodies', component: FoodiesComponent },
-  { path: '**', redirectTo: '/' },
+  {
+    path: 'foodies',
+    loadChildren: () =>
+      import('./foodies/foodies.module').then((m) => m.FoodiesModule),
+  },
+  {
+    path: 'meals',
+    loadChildren: () =>
+      import('./meals/meals.module').then((m) => m.MealsModule),
+  },
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '/',
+  },
 ];
 
 @NgModule({

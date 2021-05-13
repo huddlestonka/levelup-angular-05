@@ -4,7 +4,7 @@
       "id": "56789f40-b0fb-4aa6-8e88-376b4edfm8he",
       "name": "Kaleb",
       "nickName": "Nanny",
-      "type": "Binge Eater",
+      "type": "Midnight Snacker",
       "firstName": "Kaleb",
       "lastName": "Huddleston",
       "email": "kaleb@foodie.com",
@@ -25,7 +25,19 @@
           "time": "Supper",
           "foodieId": "56789f40-b0fb-4aa6-8e88-376b4edfm8he"
         }
-      ]
+      ],
+      "title": "Least Picky Eater"
+    },
+    {
+      "id": "b26f48b2-1ffb-4225-91ec-4f5318870186",
+      "name": "",
+      "nickName": "",
+      "firstName": "Wes",
+      "lastName": "Grimes",
+      "email": "wesgrimes@bbq.com",
+      "type": "BBQ Connoisseur",
+      "meals": [],
+      "title": "BBQ Master"
     }
   ],
   "meals": [
@@ -44,6 +56,14 @@
       "type": "TB",
       "time": "Supper",
       "foodieId": "56789f40-b0fb-4aa6-8e88-376b4edfm8he"
+    },
+    {
+      "id": "4b26bc7d-03dd-47a9-9d4c-a864a04726f2",
+      "title": "Pork Brisket",
+      "description": "NC Staple",
+      "type": "",
+      "time": "",
+      "foodieId": "b26f48b2-1ffb-4225-91ec-4f5318870186"
     }
   ]
 }

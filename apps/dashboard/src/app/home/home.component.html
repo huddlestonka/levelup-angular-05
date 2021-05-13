@@ -10,16 +10,18 @@
       >
         {{ foodie.firstName }} {{ foodie.lastName }}
       </mat-card-title>
-      <mat-card-subtitle>{{ foodie.title }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ foodie.type }}</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content *ngIf="foodie.meals?.length; else noMeals">
-      <bba-meals-list
-        attr.data-cy="home-foodie-{{ foodie.id }}-meals"
-        [meals]="foodie.meals"
-        [readonly]="true"
-        [routerLink]="['meals']"
-      >
-      </bba-meals-list>
+    <mat-card-content *ngIf="foodie.meals?.length > 0; else noMeals">
+      <mat-list data-cy="meals-list">
+        <mat-list-item
+          *ngFor="let meal of foodie.meals"
+          attr.data-cy="home-foodie-{{ meal.id }}-foodies"
+          [routerLink]="['meals']"
+        >
+          {{ meal.title }}
+        </mat-list-item>
+      </mat-list>
     </mat-card-content>
     <ng-template #noMeals> No Meals </ng-template>
   </mat-card>
