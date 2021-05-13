@@ -11,10 +11,29 @@ import { MealsComponent } from './meals/meals.component';
 import { MealDetailsComponent } from './meals/meal-details/meal-details.component';
 import { MealsListComponent } from './meals/meals-list/meals-list.component';
 import { HomeComponent } from './home/home.component';
+import { MaterialModule } from '@bba/material';
+import { RoutingModule } from './routing.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, FoodiesComponent, FoodieDetailsComponent, FoodiesListComponent, MealsComponent, MealDetailsComponent, MealsListComponent, HomeComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, StoreModule.forRoot({}, {})],
+  declarations: [
+    AppComponent,
+    FoodiesComponent,
+    FoodieDetailsComponent,
+    FoodiesListComponent,
+    MealsComponent,
+    MealDetailsComponent,
+    MealsListComponent,
+    HomeComponent,
+  ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    RoutingModule,
+    FormsModule,
+    StoreModule.forRoot({}, {}),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
