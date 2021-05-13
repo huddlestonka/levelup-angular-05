@@ -1,15 +1,18 @@
-import { FoodiesEntity } from './foodies.models';
-import { State, foodiesAdapter, initialState } from './foodies.reducer';
+import {
+  FoodiesState,
+  foodiesAdapter,
+  initialFoodiesState,
+} from './foodies.reducer';
 import * as FoodiesSelectors from './foodies.selectors';
+
+import { Foodie } from '@bba/api-interfaces';
+import { mockFoodie } from '@bba/testing';
 
 describe('Foodies Selectors', () => {
   const ERROR_MSG = 'No Error Available';
   const getFoodiesId = (it) => it['id'];
-  const createFoodiesEntity = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-    } as FoodiesEntity);
+  const createFoodie = (id: string, name = '') =>
+    ({ ...mockFoodie, id: id } as Foodie);
 
   let state;
 
@@ -17,12 +20,12 @@ describe('Foodies Selectors', () => {
     state = {
       foodies: foodiesAdapter.setAll(
         [
-          createFoodiesEntity('PRODUCT-AAA'),
-          createFoodiesEntity('PRODUCT-BBB'),
-          createFoodiesEntity('PRODUCT-CCC'),
+          createFoodie('PRODUCT-AAA'),
+          createFoodie('PRODUCT-BBB'),
+          createFoodie('PRODUCT-CCC'),
         ],
         {
-          ...initialState,
+          ...initialFoodiesState,
           selectedId: 'PRODUCT-BBB',
           error: ERROR_MSG,
           loaded: true,
@@ -41,7 +44,7 @@ describe('Foodies Selectors', () => {
     });
 
     it('getSelected() should return the selected Entity', () => {
-      const result = FoodiesSelectors.getSelected(state);
+      const result = FoodiesSelectors.getSelectedFoodie(state);
       const selId = getFoodiesId(result);
 
       expect(selId).toBe('PRODUCT-BBB');

@@ -44,7 +44,6 @@ export const getSelectedFoodie = createSelector(
   (entities, selectedId) => {
     const emptyFoodie: Foodie = {
       id: '',
-      name: '',
       nickName: '',
       firstName: '',
       lastName: '',

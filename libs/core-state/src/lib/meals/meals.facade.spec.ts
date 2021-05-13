@@ -1,118 +1,106 @@
-import { NgModule } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { readFirst } from '@nrwl/angular/testing';
+import { ActionsSubject } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, Store } from '@ngrx/store';
-
-import { NxModule } from '@nrwl/angular';
-
-import { MealsEntity } from './meals.models';
-import { MealsEffects } from './meals.effects';
 import { MealsFacade } from './meals.facade';
-
-import * as MealsSelectors from './meals.selectors';
 import * as MealsActions from './meals.actions';
-import {
-  MEALS_FEATURE_KEY,
-  State,
-  initialState,
-  reducer,
-} from './meals.reducer';
+import { initialMealsState } from './meals.reducer';
 
-interface TestSchema {
-  meals: State;
-}
+import { mockMeal } from '@bba/testing';
 
 describe('MealsFacade', () => {
   let facade: MealsFacade;
-  let store: Store<TestSchema>;
-  const createMealsEntity = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-    } as MealsEntity);
+  let actionSubject;
+  const mockActionsSubject = new ActionsSubject();
+  let store: MockStore;
 
-  beforeEach(() => {});
-
-  describe('used in NgModule', () => {
-    beforeEach(() => {
-      @NgModule({
-        imports: [
-          StoreModule.forFeature(MEALS_FEATURE_KEY, reducer),
-          EffectsModule.forFeature([MealsEffects]),
-        ],
-        providers: [MealsFacade],
-      })
-      class CustomFeatureModule {}
-
-      @NgModule({
-        imports: [
-          NxModule.forRoot(),
-          StoreModule.forRoot({}),
-          EffectsModule.forRoot([]),
-          CustomFeatureModule,
-        ],
-      })
-      class RootModule {}
-      TestBed.configureTestingModule({ imports: [RootModule] });
-
-      store = TestBed.inject(Store);
-      facade = TestBed.inject(MealsFacade);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        MealsFacade,
+        provideMockStore({ initialState: initialMealsState }),
+        { provide: ActionsSubject, useValue: mockActionsSubject },
+      ],
     });
 
-    /**
-     * The initially generated facade::loadAll() returns empty array
-     */
-    it('loadAll() should return empty list with loaded == true', async (done) => {
-      try {
-        let list = await readFirst(facade.allMeals$);
-        let isLoaded = await readFirst(facade.loaded$);
+    facade = TestBed.inject(MealsFacade);
+    actionSubject = TestBed.inject(ActionsSubject);
+    store = TestBed.inject(MockStore);
+  });
 
-        expect(list.length).toBe(0);
-        expect(isLoaded).toBe(false);
+  it('should be created', () => {
+    expect(facade).toBeTruthy();
+  });
 
-        facade.init();
+  it('should have mutations', (done) => {
+    const action = MealsActions.createMeal({ meal: mockMeal });
+    actionSubject.next(action);
 
-        list = await readFirst(facade.allMeals$);
-        isLoaded = await readFirst(facade.loaded$);
+    facade.mutations$.subscribe((result) => {
+      expect(result).toBe(action);
+      done();
+    });
+  });
 
-        expect(list.length).toBe(0);
-        expect(isLoaded).toBe(true);
+  describe('should dispatch', () => {
+    it('select on select(meal.id)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
 
-        done();
-      } catch (err) {
-        done.fail(err);
-      }
+      facade.selectMeal(mockMeal.id);
+
+      const action = MealsActions.selectMeal({ selectedId: mockMeal.id });
+
+      expect(spy).toHaveBeenCalledWith(action);
     });
 
-    /**
-     * Use `loadMealsSuccess` to manually update list
-     */
-    it('allMeals$ should return the loaded list; and loaded flag == true', async (done) => {
-      try {
-        let list = await readFirst(facade.allMeals$);
-        let isLoaded = await readFirst(facade.loaded$);
+    it('loadMeals on loadMeals()', () => {
+      const spy = jest.spyOn(store, 'dispatch');
 
-        expect(list.length).toBe(0);
-        expect(isLoaded).toBe(false);
+      facade.loadMeals();
 
-        store.dispatch(
-          MealsActions.loadMealsSuccess({
-            meals: [createMealsEntity('AAA'), createMealsEntity('BBB')],
-          })
-        );
+      const action = MealsActions.loadMeals();
 
-        list = await readFirst(facade.allMeals$);
-        isLoaded = await readFirst(facade.loaded$);
+      expect(spy).toHaveBeenCalledWith(action);
+    });
 
-        expect(list.length).toBe(2);
-        expect(isLoaded).toBe(true);
+    it('loadMeal on loadMeal(meal.id)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
 
-        done();
-      } catch (err) {
-        done.fail(err);
-      }
+      facade.loadMeal(mockMeal.id);
+
+      const action = MealsActions.loadMeal({ mealId: mockMeal.id });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    });
+
+    it('createMeal on createMeal(meal)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.createMeal(mockMeal);
+
+      const action = MealsActions.createMeal({ meal: mockMeal });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    });
+
+    it('updateMeal on updateMeal(meal)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.updateMeal(mockMeal);
+
+      const action = MealsActions.updateMeal({ meal: mockMeal });
+
+      expect(spy).toHaveBeenCalledWith(action);
+    });
+
+    it('delete on delete(model)', () => {
+      const spy = jest.spyOn(store, 'dispatch');
+
+      facade.deleteMeal(mockMeal);
+
+      const action = MealsActions.deleteMeal({ meal: mockMeal });
+
+      expect(spy).toHaveBeenCalledWith(action);
     });
   });
 });

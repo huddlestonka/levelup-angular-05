@@ -4,7 +4,6 @@ export interface BaseEntity {
 }
 
 export interface Foodie extends BaseEntity {
-  name: string;
   nickName: string;
   firstName: string;
   lastName: string;

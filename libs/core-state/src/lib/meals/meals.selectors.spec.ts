@@ -1,15 +1,14 @@
-import { MealsEntity } from './meals.models';
-import { State, mealsAdapter, initialState } from './meals.reducer';
+import { MealsState, mealsAdapter, initialMealsState } from './meals.reducer';
 import * as MealsSelectors from './meals.selectors';
+
+import { Meal } from '@bba/api-interfaces';
+import { mockMeal } from '@bba/testing';
 
 describe('Meals Selectors', () => {
   const ERROR_MSG = 'No Error Available';
   const getMealsId = (it) => it['id'];
-  const createMealsEntity = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-    } as MealsEntity);
+  const createMeal = (id: string, name = '') =>
+    ({ ...mockMeal, id: id } as Meal);
 
   let state;
 
@@ -17,12 +16,12 @@ describe('Meals Selectors', () => {
     state = {
       meals: mealsAdapter.setAll(
         [
-          createMealsEntity('PRODUCT-AAA'),
-          createMealsEntity('PRODUCT-BBB'),
-          createMealsEntity('PRODUCT-CCC'),
+          createMeal('PRODUCT-AAA'),
+          createMeal('PRODUCT-BBB'),
+          createMeal('PRODUCT-CCC'),
         ],
         {
-          ...initialState,
+          ...initialMealsState,
           selectedId: 'PRODUCT-BBB',
           error: ERROR_MSG,
           loaded: true,
@@ -41,7 +40,7 @@ describe('Meals Selectors', () => {
     });
 
     it('getSelected() should return the selected Entity', () => {
-      const result = MealsSelectors.getSelected(state);
+      const result = MealsSelectors.getSelectedMeal(state);
       const selId = getMealsId(result);
 
       expect(selId).toBe('PRODUCT-BBB');
