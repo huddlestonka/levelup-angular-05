@@ -1,1 +1,28 @@
-<p>foodies-list works!</p>
+<mat-card>
+  <mat-card-title> Foodies </mat-card-title>
+  <mat-card-content>
+    <mat-list data-cy="foodies-list">
+      <mat-list-item
+        *ngFor="let foodie of foodies"
+        attr.data-cy="foodie-{{ foodie.id }}-item"
+        class="mat-list-option"
+        (click)="selected.emit(foodie)"
+        data-cy="list-item"
+      >
+        <span matLine attr.data-cy="foodie-{{ foodie.id }}-item-title">
+          {{ foodie.firstName }} {{ foodie.lastName }}</span
+        >
+        <button
+          *ngIf="!readonly"
+          attr.data-cy="delete-foodie-{{ foodie.id }}-btn"
+          mat-icon-button
+          type="button"
+          color="warn"
+          (click)="deleted.emit(foodie); $event.stopImmediatePropagation()"
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

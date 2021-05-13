@@ -1,1 +1,19 @@
-<p>meals works!</p>
+<div class="component-container">
+  <div class="list-component">
+    <bba-meals-list
+      [meals]="meals$ | async"
+      (selected)="selectMeal($event)"
+      (deleted)="deleteMeal($event)"
+    >
+    </bba-meals-list>
+  </div>
+  <div class="details-component">
+    <bba-meal-details
+      [meal]="selectedMeal$ | async"
+      [foodies]="foodies$ | async"
+      (saved)="saveMeal($event)"
+      (cancelled)="resetForm()"
+    >
+    </bba-meal-details>
+  </div>
+</div>

@@ -1,28 +1,63 @@
 import { Injectable } from '@angular/core';
-
-import { select, Store, Action } from '@ngrx/store';
-
+import { Meal } from '@bba/api-interfaces';
+import { Action, ActionsSubject, select, Store } from '@ngrx/store';
+import { filter } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
 import * as MealsActions from './meals.actions';
-import * as MealsFeature from './meals.reducer';
+import * as fromMeals from './meals.reducer';
 import * as MealsSelectors from './meals.selectors';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MealsFacade {
-  /**
-   * Combine pieces of state using createSelector,
-   * and expose them as observables through the facade.
-   */
   loaded$ = this.store.pipe(select(MealsSelectors.getMealsLoaded));
   allMeals$ = this.store.pipe(select(MealsSelectors.getAllMeals));
-  selectedMeals$ = this.store.pipe(select(MealsSelectors.getSelected));
+  selectedMeal$ = this.store.pipe(select(MealsSelectors.getSelectedMeal));
 
-  constructor(private store: Store) {}
+  mutations$ = this.actions$.pipe(
+    filter(
+      (action: Action) =>
+        action.type === MealsActions.createMeal({} as any).type ||
+        action.type === MealsActions.updateMeal({} as any).type ||
+        action.type === MealsActions.deleteMeal({} as any).type
+    )
+  );
 
-  /**
-   * Use the initialization action to perform one
-   * or more tasks in your Effects.
-   */
-  init() {
-    this.store.dispatch(MealsActions.init());
+  constructor(
+    private store: Store<fromMeals.MealsPartialState>,
+    private actions$: ActionsSubject
+  ) {}
+
+  selectMeal(selectedId: string) {
+    this.dispatch(MealsActions.selectMeal({ selectedId }));
+  }
+
+  loadMeals() {
+    this.dispatch(MealsActions.loadMeals());
+  }
+
+  loadMeal(mealId: string) {
+    this.dispatch(MealsActions.loadMeal({ mealId }));
+  }
+
+  createMeal(meal: Meal) {
+    this.dispatch(
+      MealsActions.createMeal({
+        meal: Object.assign({}, meal, { id: uuidv4() }),
+      })
+    );
+  }
+
+  updateMeal(meal: Meal) {
+    this.dispatch(MealsActions.updateMeal({ meal }));
+  }
+
+  deleteMeal(meal: Meal) {
+    this.dispatch(MealsActions.deleteMeal({ meal }));
+  }
+
+  dispatch(action: Action) {
+    this.store.dispatch(action);
   }
 }

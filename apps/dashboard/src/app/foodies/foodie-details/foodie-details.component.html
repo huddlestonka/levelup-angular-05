@@ -1,1 +1,90 @@
-<p>foodie-details works!</p>
+<mat-card>
+  <mat-card-title data-cy="foodie-details-title">
+    <span *ngIf="currentFoodie.id; else elseBlock">
+      Editing {{ originalTitle }}
+    </span>
+    <ng-template #elseBlock> Select Foodie </ng-template>
+  </mat-card-title>
+  <form
+    #form="ngForm"
+    (submit)="saved.emit(currentFoodie)"
+    data-cy="foodie-form"
+  >
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Title"
+          data-cy="foodie-form-title"
+          [(ngModel)]="currentFoodie.title"
+          type="text"
+          name="title"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="First Name"
+          data-cy="foodie-form-firstName"
+          [(ngModel)]="currentFoodie.firstName"
+          type="text"
+          name="firstName"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Last Name"
+          data-cy="foodie-form-lastName"
+          [(ngModel)]="currentFoodie.lastName"
+          type="text"
+          name="lastName"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Email"
+          data-cy="foodie-form-email"
+          [(ngModel)]="currentFoodie.email"
+          type="text"
+          name="email"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input
+          matInput
+          placeholder="Type"
+          data-cy="foodie-form-type"
+          [(ngModel)]="currentFoodie.type"
+          type="text"
+          name="type"
+          required
+        />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        [disabled]="form.invalid"
+        type="submit"
+        mat-button
+        color="primary"
+        data-cy="foodie-form-save"
+      >
+        Save
+      </button>
+      <button
+        type="button"
+        mat-button
+        (click)="form.reset(); cancelled.emit()"
+        data-cy="foodie-form-cancel"
+      >
+        Cancel
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

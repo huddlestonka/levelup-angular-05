@@ -1,25 +1,32 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
+import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
-import * as fromFoodies from './foodies/foodies.reducer';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { RootStoreConfig, StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { reducers } from '.';
+
 import { FoodiesEffects } from './foodies/foodies.effects';
-import { FoodiesFacade } from './foodies/foodies.facade';
-import * as fromMeals from './meals/meals.reducer';
 import { MealsEffects } from './meals/meals.effects';
-import { MealsFacade } from './meals/meals.facade';
+
+const STORE_NAME = 'bba-store';
+const storeConfig: RootStoreConfig<any> = {
+  runtimeChecks: {
+    strictActionImmutability: true,
+    strictActionSerializability: true,
+    strictStateImmutability: true,
+    strictStateSerializability: true,
+  },
+};
 
 @NgModule({
   imports: [
     CommonModule,
-    StoreModule.forFeature(
-      fromFoodies.FOODIES_FEATURE_KEY,
-      fromFoodies.reducer
-    ),
-    EffectsModule.forFeature([FoodiesEffects]),
-    StoreModule.forFeature(fromMeals.MEALS_FEATURE_KEY, fromMeals.reducer),
-    EffectsModule.forFeature([MealsEffects]),
+    StoreModule.forRoot(reducers, storeConfig),
+    EffectsModule.forRoot([FoodiesEffects, MealsEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, name: STORE_NAME }),
+    StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
   ],
-  providers: [FoodiesFacade, MealsFacade],
 })
 export class CoreStateModule {}

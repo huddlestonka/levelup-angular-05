@@ -1,45 +1,58 @@
+import { Foodie } from '@bba/api-interfaces';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   FOODIES_FEATURE_KEY,
-  State,
-  FoodiesPartialState,
+  FoodiesState,
   foodiesAdapter,
 } from './foodies.reducer';
 
 // Lookup the 'Foodies' feature state managed by NgRx
-export const getFoodiesState = createFeatureSelector<
-  FoodiesPartialState,
-  State
->(FOODIES_FEATURE_KEY);
+export const getFoodiesState = createFeatureSelector<FoodiesState>(
+  FOODIES_FEATURE_KEY
+);
 
 const { selectAll, selectEntities } = foodiesAdapter.getSelectors();
 
 export const getFoodiesLoaded = createSelector(
   getFoodiesState,
-  (state: State) => state.loaded
+  (state: FoodiesState) => state.loaded
 );
 
 export const getFoodiesError = createSelector(
   getFoodiesState,
-  (state: State) => state.error
+  (state: FoodiesState) => state.error
 );
 
-export const getAllFoodies = createSelector(getFoodiesState, (state: State) =>
-  selectAll(state)
+export const getAllFoodies = createSelector(
+  getFoodiesState,
+  (state: FoodiesState) => selectAll(state)
 );
 
 export const getFoodiesEntities = createSelector(
   getFoodiesState,
-  (state: State) => selectEntities(state)
+  (state: FoodiesState) => selectEntities(state)
 );
 
-export const getSelectedId = createSelector(
+export const getSelectedFoodieId = createSelector(
   getFoodiesState,
-  (state: State) => state.selectedId
+  (state: FoodiesState) => state.selectedId
 );
 
-export const getSelected = createSelector(
+export const getSelectedFoodie = createSelector(
   getFoodiesEntities,
-  getSelectedId,
-  (entities, selectedId) => selectedId && entities[selectedId]
+  getSelectedFoodieId,
+  (entities, selectedId) => {
+    const emptyFoodie: Foodie = {
+      id: '',
+      name: '',
+      nickName: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      type: '',
+      meals: [],
+    };
+
+    return selectedId ? entities[selectedId] : emptyFoodie;
+  }
 );

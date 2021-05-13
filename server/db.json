@@ -1,0 +1,49 @@
+{
+  "foodies": [
+    {
+      "id": "56789f40-b0fb-4aa6-8e88-376b4edfm8he",
+      "name": "Kaleb",
+      "nickName": "Nanny",
+      "type": "Binge Eater",
+      "firstName": "Kaleb",
+      "lastName": "Huddleston",
+      "email": "kaleb@foodie.com",
+      "meals": [
+        {
+          "id": "56789f40-b0fb-4aa6-4e88-376b4edfm8he",
+          "title": "Best Meal Of The Day",
+          "description": "Bacon, Eggs, Gravy Biscuits",
+          "type": "TB",
+          "time": "Breakfast",
+          "foodieId": "56789f40-b0fb-4aa6-8e88-376b4edfm8he"
+        },
+        {
+          "id": "567898j0-b0fb-4aa6-4e88-376b4e0lk8he",
+          "title": "2nd Best Meal Of The Day",
+          "description": "Steak and potatoes",
+          "type": "TB",
+          "time": "Supper",
+          "foodieId": "56789f40-b0fb-4aa6-8e88-376b4edfm8he"
+        }
+      ]
+    }
+  ],
+  "meals": [
+    {
+      "id": "56789f40-b0fb-4aa6-4e88-376b4edfm8he",
+      "title": "Best Meal Of The Day",
+      "description": "Bacon, Eggs, Gravy Biscuits",
+      "type": "TB",
+      "time": "Breakfast",
+      "foodieId": "56789f40-b0fb-4aa6-8e88-376b4edfm8he"
+    },
+    {
+      "id": "567898j0-b0fb-4aa6-4e88-376b4e0lk8he",
+      "title": "2nd Best Meal Of The Day",
+      "description": "Steak and potatoes",
+      "type": "TB",
+      "time": "Supper",
+      "foodieId": "56789f40-b0fb-4aa6-8e88-376b4edfm8he"
+    }
+  ]
+}

@@ -1,1 +1,28 @@
-<p>meals-list works!</p>
+<mat-card>
+  <mat-card-title> Meals </mat-card-title>
+  <mat-card-content>
+    <mat-list data-cy="meals-list">
+      <mat-list-item
+        *ngFor="let meal of meals"
+        attr.data-cy="meal-{{ meal.id }}-item"
+        class="mat-list-option"
+        (click)="selected.emit(meal)"
+        data-cy="list-item"
+      >
+        <span matLine attr.data-cy="meal-{{ meal.id }}-item-title">
+          {{ meal.title }}</span
+        >
+        <button
+          *ngIf="!readonly"
+          attr.data-cy="delete-meal-{{ meal.id }}-btn"
+          mat-icon-button
+          type="button"
+          color="warn"
+          (click)="deleted.emit(meal); $event.stopImmediatePropagation()"
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

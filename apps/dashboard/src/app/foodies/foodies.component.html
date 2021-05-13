@@ -1,1 +1,18 @@
-<p>foodies works!</p>
+<div class="component-container">
+  <div class="list-component">
+    <bba-foodies-list
+      [foodies]="foodies$ | async"
+      (selected)="selectFoodie($event)"
+      (deleted)="deleteFoodie($event)"
+    >
+    </bba-foodies-list>
+  </div>
+  <div class="details-component">
+    <bba-foodie-details
+      [foodie]="selectedFoodie$ | async"
+      (saved)="saveFoodie($event)"
+      (cancelled)="resetForm()"
+    >
+    </bba-foodie-details>
+  </div>
+</div>

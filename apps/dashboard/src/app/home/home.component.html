@@ -1,1 +1,26 @@
-<p>home works!</p>
+<div class="home-container" data-cy="home-foodie-cards">
+  <mat-card
+    *ngFor="let foodie of foodieMeals$ | async"
+    attr.data-cy="home-foodie-{{ foodie.id }}-card"
+  >
+    <mat-card-header>
+      <mat-card-title
+        attr.data-cy="home-foodie-{{ foodie.id }}-title"
+        [routerLink]="['foodies']"
+      >
+        {{ foodie.firstName }} {{ foodie.lastName }}
+      </mat-card-title>
+      <mat-card-subtitle>{{ foodie.title }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content *ngIf="foodie.meals?.length; else noMeals">
+      <bba-meals-list
+        attr.data-cy="home-foodie-{{ foodie.id }}-meals"
+        [meals]="foodie.meals"
+        [readonly]="true"
+        [routerLink]="['meals']"
+      >
+      </bba-meals-list>
+    </mat-card-content>
+    <ng-template #noMeals> No Meals </ng-template>
+  </mat-card>
+</div>
